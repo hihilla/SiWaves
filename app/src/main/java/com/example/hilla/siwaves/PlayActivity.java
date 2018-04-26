@@ -34,8 +34,6 @@ public class PlayActivity extends AppCompatActivity {
 
     public void onVideoClick(View view) {
         VideoView videoview = (VideoView) findViewById(R.id.videoview);
-//        Uri uri = Uri.parse("https://www.youtube.com/watch?v=Iq6gCapM9gk");
-//        videoview.setVideoURI(uri);
         videoview.setVideoPath("http://www.ebookfrenzy.com/android_book/movie.mp4");
         videoview.start();
     }
