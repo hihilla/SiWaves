@@ -1,6 +1,7 @@
 package com.example.hilla.siwaves;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Build;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
@@ -14,6 +15,9 @@ public class PlayActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Intent intent = getIntent();
+        String songName = intent.getStringExtra("song name").replaceAll(" ", "+");
+
         setContentView(R.layout.activity_play);
     }
 
