@@ -13,7 +13,12 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
     }
 
+    private void requestSong() {
+        // todo : implement GET
+    }
+
     public void onSearchClicked(View view) {
+        requestSong();
         Intent intent = new Intent(this, PlayActivity.class);
         startActivity(intent);
     }

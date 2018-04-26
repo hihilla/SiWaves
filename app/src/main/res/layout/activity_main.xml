@@ -7,12 +7,20 @@
     android:orientation="vertical"
     tools:context=".MainActivity">
 
-    <ImageView
-        android:id="@+id/imageView"
+    <com.bosphere.fadingedgelayout.FadingEdgeLayout
+        android:id="@+id/fading_edge_layout"
         android:layout_width="match_parent"
+        android:layout_height="0dp"
         android:layout_weight="0.5"
-        app:srcCompat="@drawable/main"
-        android:layout_height="180dp" />
+        app:fel_edge="bottom"
+        app:fel_size_bottom="400dp">
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:srcCompat="@drawable/main" />
+    </com.bosphere.fadingedgelayout.FadingEdgeLayout>
 
     <Space
         android:layout_width="match_parent"
@@ -33,6 +41,7 @@
             android:layout_weight="0.1" />
 
         <EditText
+            android:id="@+id/text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="0.7"
@@ -50,7 +59,9 @@
             android:layout_height="wrap_content"
             android:layout_weight="0.2"
             android:text="search"
-            android:onClick="onSearchClicked"/>
+            android:onClick="onSearchClicked"
+            android:textColor="@color/textColor"
+            android:background="@drawable/button_rounded"/>
 
         <Space
             android:layout_width="wrap_content"
