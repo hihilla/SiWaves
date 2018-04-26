@@ -18,7 +18,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:onClick="startVibrate"
-        android:text="vibrate" />
+        android:text="vibrate"
+        android:textColor="@color/textColor"
+        android:background="@drawable/button_rounded"/>
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.1" />
 
     <VideoView
         android:id="@+id/videoview"
@@ -28,12 +35,19 @@
         tools:layout_editor_absoluteX="42dp"
         tools:layout_editor_absoluteY="155dp" />
 
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.1" />
+
     <Button
         android:id="@+id/button_video"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:onClick="onVideoClick"
-        android:text="play" />
+        android:text="play"
+        android:textColor="@color/textColor"
+        android:background="@drawable/button_rounded"/>
 
     <Space
         android:layout_width="match_parent"

@@ -7,26 +7,72 @@
     android:orientation="vertical"
     tools:context=".MainActivity">
 
+    <com.bosphere.fadingedgelayout.FadingEdgeLayout
+        android:id="@+id/fading_edge_layout"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.5"
+        app:fel_edge="bottom"
+        app:fel_size_bottom="400dp">
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:srcCompat="@drawable/main" />
+    </com.bosphere.fadingedgelayout.FadingEdgeLayout>
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.1" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
+        android:layout_weight="0.1"
         android:gravity="center_vertical"
         android:orientation="horizontal">
 
+        <Space
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.1" />
+
         <EditText
-            android:id="@+id/song"
+            android:id="@+id/text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="0.7"
             android:hint="song name"
-            android:inputType="phone" />
+            android:inputType="text" />
+
+        <Space
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.1" />
 
         <Button
             android:id="@+id/button_search"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:onClick="startVibrate"
-            android:text="search" />
+            android:layout_weight="0.2"
+            android:text="search"
+            android:onClick="onSearchClicked"
+            android:textColor="@color/textColor"
+            android:background="@drawable/button_rounded"/>
+
+        <Space
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.1" />
+
     </LinearLayout>
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.4" />
+
 </LinearLayout>

@@ -1,13 +1,9 @@
 package com.example.hilla.siwaves;
 
-import android.content.Context;
-import android.os.Build;
-import android.os.VibrationEffect;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.os.Vibrator;
 import android.view.View;
-import android.widget.VideoView;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -17,5 +13,13 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
     }
 
+    private void requestSong() {
+        // todo : implement GET
+    }
 
+    public void onSearchClicked(View view) {
+        requestSong();
+        Intent intent = new Intent(this, PlayActivity.class);
+        startActivity(intent);
+    }
 }
