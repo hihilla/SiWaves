@@ -4,28 +4,29 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    tools:context=".MainActivity">
 
-    <Button
-        android:id="@+id/button_vibrate"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="vibrate"
-        android:onClick="startVibrate"/>
+        android:layout_gravity="center"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
 
-    <VideoView
-        android:id="@+id/videoview"
-        android:layout_width="fill_parent"
-        android:layout_height="200dp"
-        tools:layout_editor_absoluteX="42dp"
-        tools:layout_editor_absoluteY="155dp" />
+        <EditText
+            android:id="@+id/song"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.7"
+            android:hint="song name"
+            android:inputType="phone" />
 
-    <Button
-        android:id="@+id/button_video"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="play"
-        android:onClick="onVideoClick"/>
-
+        <Button
+            android:id="@+id/button_search"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="startVibrate"
+            android:text="search" />
+    </LinearLayout>
 </LinearLayout>

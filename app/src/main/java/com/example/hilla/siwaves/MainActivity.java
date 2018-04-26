@@ -17,26 +17,5 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
     }
 
-    /** Called when the user touches the button */
-    public void startVibrate(View view) {
-        // Do something in response to button click
-        long[] timings ={1000, 1000, 1000, 1000, 1000};
-        int[] amplitudes ={255, 200, 150, 100, 50};
 
-        Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            VibrationEffect effect = VibrationEffect.createWaveform(timings, amplitudes, 3);
-            v.vibrate(effect);
-        }else{
-            v.vibrate(100);
-        }
-    }
-
-    public void onVideoClick(View view) {
-        VideoView videoview = (VideoView) findViewById(R.id.videoview);
-//        Uri uri = Uri.parse("https://www.youtube.com/watch?v=Iq6gCapM9gk");
-//        videoview.setVideoURI(uri);
-        videoview.setVideoPath("http://www.ebookfrenzy.com/android_book/movie.mp4");
-        videoview.start();
-    }
 }
