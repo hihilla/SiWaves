@@ -20,13 +20,15 @@ public class MainActivity extends AppCompatActivity {
     /** Called when the user touches the button */
     public void startVibrate(View view) {
         // Do something in response to button click
+        long[] timings ={1000, 1000, 1000, 1000, 1000};
+        int[] amplitudes ={255, 200, 150, 100, 50};
+
         Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
-        // Vibrate for 500 milliseconds
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            v.vibrate(VibrationEffect.createOneShot(500,VibrationEffect.DEFAULT_AMPLITUDE));
+            VibrationEffect effect = VibrationEffect.createWaveform(timings, amplitudes, 3);
+            v.vibrate(effect);
         }else{
-            //deprecated in API 26
-            v.vibrate(500);
+            v.vibrate(100);
         }
     }
 
