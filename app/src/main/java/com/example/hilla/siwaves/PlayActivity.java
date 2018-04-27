@@ -52,7 +52,7 @@ public class PlayActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Intent intent = getIntent();
-        String songName = (intent.getStringExtra("song name") + " lyric").replaceAll(" ", "+");
+        String songName = (intent.getStringExtra("song name") + "").replaceAll(" ", "+");
         String urlString = "http://18.218.124.172:4000/get_song?word_search=" + songName;
         spinner = (ProgressBar) findViewById(R.id.progressBar1);
         startRequest(urlString);
