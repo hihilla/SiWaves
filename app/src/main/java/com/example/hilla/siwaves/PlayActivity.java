@@ -118,6 +118,9 @@ public class PlayActivity extends AppCompatActivity {
                     String responseMsg = con.getResponseMessage();
                     responseCode = con.getResponseCode();
                     Log.d("Hilla", "response code " + responseCode + responseMsg);
+                    if (responseCode != 200) {
+                        return "";
+                    }
                     BufferedReader in = new BufferedReader(
                             new InputStreamReader(con.getInputStream()));
                     String inputLine;
@@ -146,6 +149,9 @@ public class PlayActivity extends AppCompatActivity {
 
         protected void onPostExecute(String result) {
             ((ProgressBar) findViewById(R.id.progressBar1)).setVisibility(View.GONE);
+            if (result.equals("")) {
+                // bad response code :(
+            }
             try {
                 JSONObject json = new JSONObject(result);
                 mTitle = json.getString("title");
