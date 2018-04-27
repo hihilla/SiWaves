@@ -1,14 +1,22 @@
-package com.example.hilla.siwaves;
+package com.example.hilla.siwaves;;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.VideoView;
+
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URLConnection;
 
 public class PlayActivity extends AppCompatActivity {
 
@@ -17,8 +25,17 @@ public class PlayActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         Intent intent = getIntent();
         String songName = intent.getStringExtra("song name").replaceAll(" ", "+");
-
+        String urlString = "http://18.218.124.172:4000/get_song?word_search=" + songName;
+        startRequest(urlString);
         setContentView(R.layout.activity_play);
+    }
+
+    private void startRequest(final String urlString) {
+        new Thread(new Runnable() {
+            public void run() {
+                new GetRequestTask().execute(urlString);
+            }
+        }).start();
     }
 
     /** Called when the user touches the button */
@@ -41,4 +58,50 @@ public class PlayActivity extends AppCompatActivity {
         videoview.setVideoPath("http://www.ebookfrenzy.com/android_book/movie.mp4");
         videoview.start();
     }
+
+    private class GetRequestTask extends AsyncTask<String, String, String> {
+        protected String doInBackground(String... urls) {
+            int responseCode = 0;
+            String res = "";
+            HttpURLConnection con = null;
+            try {
+                for (String urlString : urls) {
+                    URL url = new URL(urlString);
+                    con = (HttpURLConnection) url.openConnection();
+
+                    con.setRequestMethod("GET");
+                    con.setRequestProperty("User-Agent", "Mozilla/5.0");
+                    String responseMsg = con.getResponseMessage();
+                    responseCode = con.getResponseCode();
+                    Log.d("Hilla", "response code "+responseCode + responseMsg);
+                    BufferedReader in = new BufferedReader(
+                            new InputStreamReader(con.getInputStream()));
+                    String inputLine;
+                    StringBuffer response = new StringBuffer();
+
+                    while ((inputLine = in.readLine()) != null) {
+                        Log.d("Hilla", inputLine);
+                        response.append(inputLine);
+                    }
+                    in.close();
+                    res += response.toString();
+                }
+            } catch (Exception e) {
+
+            } finally {
+                if (con != null) {
+                    con.disconnect();
+                }
+            }
+            return res;
+        }
+
+        protected void onProgressUpdate(Integer... progress) {
+        }
+
+        protected void onPostExecute(String result) {
+            System.out.println("Request result code " + result);
+        }
+    }
+
 }
