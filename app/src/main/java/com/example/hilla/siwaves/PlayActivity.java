@@ -44,6 +44,7 @@ public class PlayActivity extends AppCompatActivity {
     private int length;
     private boolean paused;
     private boolean started;
+    private boolean resultOK = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -119,7 +120,8 @@ public class PlayActivity extends AppCompatActivity {
                     responseCode = con.getResponseCode();
                     Log.d("Hilla", "response code " + responseCode + responseMsg);
                     if (responseCode != 200) {
-                        return "";
+                        // bad response
+                        resultOK = false;
                     }
                     BufferedReader in = new BufferedReader(
                             new InputStreamReader(con.getInputStream()));
@@ -149,9 +151,6 @@ public class PlayActivity extends AppCompatActivity {
 
         protected void onPostExecute(String result) {
             ((ProgressBar) findViewById(R.id.progressBar1)).setVisibility(View.GONE);
-            if (result.equals("")) {
-                // bad response code :(
-            }
             try {
                 JSONObject json = new JSONObject(result);
                 mTitle = json.getString("title");
