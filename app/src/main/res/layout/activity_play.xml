@@ -41,13 +41,23 @@
         android:layout_weight="0.1" />
 
     <Button
-        android:id="@+id/button_video"
+        android:id="@+id/button_play_video"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:onClick="onVideoClick"
+        android:onClick="onPlayVideoClick"
         android:text="play"
         android:textColor="@color/textColor"
         android:background="@drawable/button_rounded"/>
+
+    <Button
+        android:id="@+id/button_pause_video"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="onPauseVideoClick"
+        android:text="pause"
+        android:textColor="@color/textColor"
+        android:background="@drawable/button_rounded"/>
+
 
     <Space
         android:layout_width="match_parent"

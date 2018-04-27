@@ -8,13 +8,33 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.VideoView;
+import android.net.Uri;
+import android.widget.MediaController;
+
 
 public class PlayActivity extends AppCompatActivity {
+
+    private VideoView vidView;
+    private int length;
+    private boolean paused;
+    private boolean started;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_play);
+        vidView = (VideoView)findViewById(R.id.videoview);
+        String vidAddress = "http://18.218.124.172:8000/JGwWNGJdvx8.mp4";
+        vidView.setVideoPath(vidAddress);
+        length = 0;
+//        VideoView vidView = (VideoView)findViewById(R.id.videoview);
+//        String vidAddress = "https://archive.org/download/ksnn_compilation_master_the_internet/ksnn_compilation_master_the_internet_512kb.mp4";
+//        //String vidAddress = "http://18.218.124.172:4000/video?id=rp4UwPZfRis.mp4";
+//        Uri vidUri = Uri.parse(vidAddress);
+//        vidView.setVideoURI(vidUri);
+//        vidView.start();
+        //vidView.start();
+
     }
 
     /** Called when the user touches the button */
@@ -27,16 +47,33 @@ public class PlayActivity extends AppCompatActivity {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             VibrationEffect effect = VibrationEffect.createWaveform(mVibratePattern, mAmplitudes, -1);
             v.vibrate(effect);
-        }else{
+        }else {
             v.vibrate(100);
         }
     }
 
-    public void onVideoClick(View view) {
-        VideoView videoview = (VideoView) findViewById(R.id.videoview);
-//        Uri uri = Uri.parse("https://www.youtube.com/watch?v=Iq6gCapM9gk");
-//        videoview.setVideoURI(uri);
-        videoview.setVideoPath("http://www.ebookfrenzy.com/android_book/movie.mp4");
-        videoview.start();
+    public void onPlayVideoClick(View view) {
+        vidView.seekTo(length);
+        vidView.start();
     }
+
+    public void onPauseVideoClick(View view) {
+        length = vidView.getCurrentPosition();
+        vidView.resume();
+    }
+
+    /*@Override
+    public void onPause() {
+        //Log.d(TAG, "onPause called");
+        super.onPause();
+        length = vidView.getCurrentPosition(); //stopPosition is an int
+        vidView.pause();
+    }
+    @Override
+    public void onResume() {
+        super.onResume();
+        //Log.d(TAG, "onResume called");
+        vidView.seekTo(length);
+        vidView.start(); //Or use resume() if it doesn't work. I'm not sure
+    }*/
 }
