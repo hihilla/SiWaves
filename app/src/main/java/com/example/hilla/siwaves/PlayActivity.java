@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.VideoView;
 import android.net.Uri;
 import android.widget.MediaController;
@@ -45,17 +46,20 @@ public class PlayActivity extends AppCompatActivity {
     private boolean paused;
     private boolean started;
     private boolean resultOK = true;
+    private TextView textViewId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Intent intent = getIntent();
-        String songName = (intent.getStringExtra("song name") + "").replaceAll(" ", "+");
+        String songName = (intent.getStringExtra("song name") + " lyric").replaceAll(" ", "+");
         String urlString = "http://18.218.124.172:4000/get_song?word_search=" + songName;
         spinner = (ProgressBar) findViewById(R.id.progressBar1);
         startRequest(urlString);
         setContentView(R.layout.activity_play);
         vidView = (VideoView) findViewById(R.id.videoview);
+        textViewId = (TextView)  findViewById(R.id.textViewId);
+
         //String vidAddress = "http://18.218.124.172:8000/JGwWNGJdvx8.mp4";
         //vidView.setVideoPath(vidAddress);
         length = 0;
@@ -148,6 +152,7 @@ public class PlayActivity extends AppCompatActivity {
                 mTitle = json.getString("title");
                 mUrl = json.getString("url");
                 vidView.setVideoPath(mUrl);
+                textViewId.setText(mTitle);
                 mTiming = jsnoArrayToLongs(json.getJSONArray("timing"));
                 mAmps = jsnoArrayToInts(json.getJSONArray("amplitudes"));
                 Log.d("Galllll", json.getString("url"));
