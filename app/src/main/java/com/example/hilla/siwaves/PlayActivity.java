@@ -12,6 +12,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.VideoView;
 import android.net.Uri;
 import android.widget.MediaController;
@@ -34,6 +36,9 @@ public class PlayActivity extends AppCompatActivity {
     int[] mAmps;
     String mTitle;
     String mUrl;
+    ProgressBar spinner;
+    GetRequestTask task;
+    Vibrator vibrator;
 
     private VideoView vidView;
     private int length;
@@ -44,12 +49,12 @@ public class PlayActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Intent intent = getIntent();
-        String songName = intent.getStringExtra("song name").replaceAll(" ", "+");
+        String songName = intent.getStringExtra("song name") + " lyric".replaceAll(" ", "+");
         String urlString = "http://18.218.124.172:4000/get_song?word_search=" + songName;
-        Log.d("Hilla", urlString);
+        spinner = (ProgressBar) findViewById(R.id.progressBar1);
         startRequest(urlString);
         setContentView(R.layout.activity_play);
-        vidView = (VideoView)findViewById(R.id.videoview);
+        vidView = (VideoView) findViewById(R.id.videoview);
         String vidAddress = "http://18.218.124.172:8000/JGwWNGJdvx8.mp4";
         vidView.setVideoPath(vidAddress);
         length = 0;
@@ -67,38 +72,36 @@ public class PlayActivity extends AppCompatActivity {
         new Thread(new Runnable() {
             public void run() {
                 Log.d("Hilla", "starting...");
-                new GetRequestTask().execute(urlString);
+                task = new GetRequestTask();
+                task.execute(urlString);
             }
         }).start();
     }
 
-    /**
-     * Called when the user touches the button
-     */
-    public void startVibrate(View view) {
-        // Do something in response to button click
-//        long[] mVibratePattern = new long[]{100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100};
-//        int[] mAmplitudes = new int[]{78, 128, 255, 114, 125, 102, 121, 123, 122, 99, 103, 113, 107, 106, 111, 98, 83, 47, 151, 112, 88, 83, 89, 86, 77, 65, 44, 37, 30, 40, 99, 117, 105, 78, 100, 130, 145, 126, 60, 136, 119, 69, 51, 54, 73, 75, 49, 20, 66, 41, 50, 37, 38, 43, 42, 49, 18, 37, 29, 34, 26, 23, 17, 5, 4, 2, 4, 33, 35, 35, 16, 11, 26, 8, 22, 72, 38, 39};
-
-        Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+    private void startVibrate() {
+        vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             VibrationEffect effect = VibrationEffect.createWaveform(mTiming, mAmps, -1);
-            v.vibrate(effect);
+            vibrator.vibrate(effect);
         } else {
-            v.vibrate(100);
+            vibrator.vibrate(100);
         }
     }
 
     public void onPlayVideoClick(View view) {
         vidView.seekTo(length);
-        vidView.start();
+        if (length == 0) {
+            vidView.start();
+            startVibrate();
+        }
     }
 
     public void onPauseVideoClick(View view) {
-        length = vidView.getCurrentPosition();
-        vidView.resume();
+        vidView.pause();
+        vibrator.cancel();
+        length = vidView.getDuration();
+        Log.d("Position", "" + length);
     }
-
 
     private class GetRequestTask extends AsyncTask<String, String, String> {
         protected String doInBackground(String... urls) {
@@ -137,16 +140,20 @@ public class PlayActivity extends AppCompatActivity {
         }
 
         protected void onProgressUpdate(Integer... progress) {
+            spinner.setVisibility(View.VISIBLE);
+
         }
 
         protected void onPostExecute(String result) {
+            ((ProgressBar) findViewById(R.id.progressBar1)).setVisibility(View.GONE);
             try {
                 JSONObject json = new JSONObject(result);
                 mTitle = json.getString("title");
                 mUrl = json.getString("url");
+                vidView.setVideoPath(mUrl);
                 mTiming = jsnoArrayToLongs(json.getJSONArray("timing"));
                 mAmps = jsnoArrayToInts(json.getJSONArray("amplitudes"));
-                Log.d("Hilla", json.getString("title"));
+                Log.d("Hilla", json.getString("url"));
             } catch (JSONException e) {
                 e.printStackTrace();
             }
