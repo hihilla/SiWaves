@@ -43,10 +43,8 @@ public class PlayActivity extends AppCompatActivity {
 
     private VideoView vidView;
     private int length;
-    private boolean paused;
-    private boolean started;
-    private boolean resultOK = true;
     private TextView textViewId;
+    private boolean resultOK = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,9 +57,6 @@ public class PlayActivity extends AppCompatActivity {
         setContentView(R.layout.activity_play);
         vidView = (VideoView) findViewById(R.id.videoview);
         textViewId = (TextView)  findViewById(R.id.textViewId);
-
-        //String vidAddress = "http://18.218.124.172:8000/JGwWNGJdvx8.mp4";
-        //vidView.setVideoPath(vidAddress);
         length = 0;
     }
 
@@ -75,38 +70,29 @@ public class PlayActivity extends AppCompatActivity {
         }).start();
     }
 
-    private void startVibrate(long durationMiliSeconds) {
+    private void startVibrate() {
         vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             int newIndex = -1;
-            if (durationMiliSeconds != -1) {
-                newIndex = (int)(durationMiliSeconds / 1000);
+            if (length != -1) {
+                newIndex = length / 1000;
             }
 
             VibrationEffect effect = VibrationEffect.createWaveform(mTiming, mAmps, newIndex);
             vibrator.vibrate(effect);
         }
-
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-//            VibrationEffect effect = VibrationEffect.createWaveform(mTiming, mAmps, -1);
-//            vibrator.vibrate(effect);
-//        } else {
-//            vibrator.vibrate(100);
-//        }
     }
 
     public void onPlayVideoClick(View view) {
         Log.d("Bar", "Total - "+vidView.getDuration());
         Log.d("Bar", "Seconds - "+vidView.getDuration() / 1000);
         Log.d("Bar", "min - "+(vidView.getDuration() / 1000) / 60);
-
-        long duration = vidView.getDuration();
         vidView.seekTo(length);
 
         if (length == 0) {
             vidView.start();
-            startVibrate(duration);
+            startVibrate();
         } else {
             vidView.start();
         }
