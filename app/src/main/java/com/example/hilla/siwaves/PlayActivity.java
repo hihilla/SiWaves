@@ -75,28 +75,47 @@ public class PlayActivity extends AppCompatActivity {
         }).start();
     }
 
-    private void startVibrate() {
+    private void startVibrate(long durationMiliSeconds) {
         vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            VibrationEffect effect = VibrationEffect.createWaveform(mTiming, mAmps, -1);
+            int newIndex = -1;
+            if (durationMiliSeconds != -1) {
+                newIndex = (int)(durationMiliSeconds / 1000);
+            }
+
+            VibrationEffect effect = VibrationEffect.createWaveform(mTiming, mAmps, newIndex);
             vibrator.vibrate(effect);
-        } else {
-            vibrator.vibrate(100);
         }
+
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+//            VibrationEffect effect = VibrationEffect.createWaveform(mTiming, mAmps, -1);
+//            vibrator.vibrate(effect);
+//        } else {
+//            vibrator.vibrate(100);
+//        }
     }
 
     public void onPlayVideoClick(View view) {
+        Log.d("Bar", "Total - "+vidView.getDuration());
+        Log.d("Bar", "Seconds - "+vidView.getDuration() / 1000);
+        Log.d("Bar", "min - "+(vidView.getDuration() / 1000) / 60);
+
+        long duration = vidView.getDuration();
         vidView.seekTo(length);
+
         if (length == 0) {
             vidView.start();
-            startVibrate();
+            startVibrate(duration);
+        } else {
+            vidView.start();
         }
     }
 
     public void onPauseVideoClick(View view) {
         vidView.pause();
+        length = vidView.getCurrentPosition();
         vibrator.cancel();
-        length = vidView.getDuration();
         Log.d("Position", "" + length);
     }
 
