@@ -1,6 +1,5 @@
 package com.example.hilla.siwaves;
 
-;
 
 import android.content.Context;
 import android.content.Intent;
